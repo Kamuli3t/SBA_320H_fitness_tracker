@@ -1,35 +1,60 @@
-import React, { useState } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
+import { useSelector } from "react-redux";
+import { useState } from "react";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+} from "@mui/material";
 
 const WorkoutCalendar = () => {
-  const [workouts, setWorkouts] = useState([
-    { title: "Morning Run", date: "2025-03-20" },
-    { title: "Leg Day", date: "2025-03-21" },
-  ]);
+  const workouts = useSelector((state) => state.workout.workoutList);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState(null);
+
+  const handleEventClick = (clickInfo) => {
+    setSelectedEvent(clickInfo.event);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedEvent(null);
+  };
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
-      <h2 className="text-xl font-bold text-gray-700 mb-4 text-center">
-        Workout Calendar
-      </h2>
       <FullCalendar
         plugins={[dayGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
-        events={workouts} // Show workouts inside calendar days
-        dateClick={(info) => {
-          const newWorkout = prompt(`Add a workout on ${info.dateStr}`);
-          if (newWorkout) {
-            setWorkouts([
-              ...workouts,
-              { title: newWorkout, date: info.dateStr },
-            ]);
-          }
-        }}
+        events={workouts}
         height="auto"
         eventColor="#1E90FF"
+        eventClick={handleEventClick} // Add eventClick handler
       />
+      <Dialog open={isModalOpen} onClose={handleCloseModal}>
+        <DialogTitle>Workout Details</DialogTitle>
+        <DialogContent>
+          {selectedEvent && (
+            <div>
+              <p>
+                <strong>Title:</strong> {selectedEvent.title}
+              </p>
+              <p>
+                <strong>Date:</strong> {selectedEvent.startStr}
+              </p>
+              {/* You can add more details here if needed */}
+            </div>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseModal}>Close</Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
