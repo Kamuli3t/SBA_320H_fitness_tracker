@@ -10,7 +10,6 @@ import {
   InputLabel,
   Select,
   MenuItem,
-  FormHelperText,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { workoutActions } from "../store/workoutSlice";

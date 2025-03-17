@@ -2,13 +2,7 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { workoutActions } from "../store/workoutSlice";
 import WorkoutForm from "./WorkoutForm";
-import {
-  List,
-  ListItem,
-  ListItemText,
-  ListItemSecondaryAction,
-  IconButton,
-} from "@mui/material";
+import { List, ListItem, ListItemText, IconButton } from "@mui/material";
 import { Delete as DeleteIcon, Edit as EditIcon } from "@mui/icons-material";
 import { Button } from "@mui/material";
 
@@ -49,9 +43,10 @@ const WorkoutList = () => {
       </Button>
       <List>
         {workouts.map((workout) => (
-          <ListItem key={workout.id} sx={{ width: "400px" }}>
-            <ListItemText primary={workout.title} secondary={workout.date} />
-            <ListItemSecondaryAction>
+          <div className="bg-white/5 rounded-sm mt-2">
+            <ListItem key={workout.id} sx={{ width: "400px" }}>
+              <ListItemText primary={workout.title} secondary={workout.date} />
+
               <IconButton
                 edge="end"
                 aria-label="edit"
@@ -66,8 +61,8 @@ const WorkoutList = () => {
               >
                 <DeleteIcon />
               </IconButton>
-            </ListItemSecondaryAction>
-          </ListItem>
+            </ListItem>
+          </div>
         ))}
       </List>
       <WorkoutForm
